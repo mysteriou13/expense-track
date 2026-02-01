@@ -1,13 +1,17 @@
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "./api/auth/[...nextauth]/route";
+import FromConnection from "./components/fromConnection/fromConnection";
+import Deconnection from "./components/Deconnection/Deconnection";
+export default async function Home() {
+  const session = await getServerSession(authOptions);
 
-
-export default function Home() {
   return (
-    
- 
-    <div className="bg-red-900 p-4">
-      <div>Good page</div>
+    <div>
+      {!session ? (
+        <FromConnection />
+      ) : (
+        <div>Bienvenue, {session.user?.name}<Deconnection/> </div>
+      )}
     </div>
-  
-    
   );
 }
