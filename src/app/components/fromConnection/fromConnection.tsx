@@ -28,10 +28,17 @@ export default function FromConnection() {
             connection avec
             <div
               className=" text-blue-600 underline hover:cursor-pointer"
-              onClick={() =>signIn("github")}>
+              onClick={() => signIn("github")}
+            >
               github
             </div>
-            <div className=" text-blue-600 underline hover:cursor-pointer"> google</div>
+            <div
+              className=" text-blue-600 underline hover:cursor-pointer"
+              onClick={() => signIn("google")}
+            >
+  
+              google
+            </div>
           </div>
         </div>
       </form>
