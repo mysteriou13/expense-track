@@ -2,7 +2,12 @@
 import { signIn } from "next-auth/react";
 export default function FromConnection() {
   return (
-    <div className="text-white relative left-[35vw] top-[30vh]  w-[31vw] h-[60%]">
+    <div className="text-white relative left-[35vw] top-[40vh]  w-[31vw] h-[60%]">
+      
+      <div>
+        
+      
+
       <form>
         <h1 className="text-2xl mb-4"> Connection</h1>
         <div className="grid gap-5 text-[1.2em]">
@@ -41,6 +46,9 @@ export default function FromConnection() {
           </div>
         </div>
       </form>
+      </div>
+
+
     </div>
   );
 }
