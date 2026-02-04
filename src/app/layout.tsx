@@ -1,10 +1,4 @@
-import "./globals.css";
-
-import { Syncopate } from 'next/font/google';
-
-const syncopate = Syncopate({ subsets: ['latin'], weight: '700' });
-
-
+import "./globals.css"
 export default function LayoutRouter({
   children,
 }: {
@@ -12,10 +6,7 @@ export default function LayoutRouter({
 }) {
   return (
     <html lang="en">
-      <body className={syncopate.className}>
-<head>
-  <link href="https://fonts.googleapis.com/css2?family=Syncopate&display=swap" rel="stylesheet" />
-</head>      
+      <body>
 
         {/* SessionProvider est maintenant dans un Client Component */}
         <div>{children}</div>
