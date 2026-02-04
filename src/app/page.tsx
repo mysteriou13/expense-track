@@ -6,7 +6,7 @@ export default async function Home() {
   const session = await getServerSession(authOptions);
 
   return (
-    <div>
+    <div  className=" h-screen w-screen bg-cover bg-center bg-[url(/back-index.jpg)]">
       {!session ? (
         <FromConnection />
       ) : (
