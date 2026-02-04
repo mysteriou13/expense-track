@@ -11,7 +11,7 @@ export default async function Home() {
         <div className=" h-screen w-screen bg-cover bg-position-[-36px_0px] bg-[url(/back-index.jpg)]">
           <div>
             <div className="font-bold text-white relative left-[48vw] top-[23vh]  w-[31vw] h-[60%] text-[40px]">
-              <p className="font-bold">
+              <p>
               <span className="font-bold text-[#d8fffbff]">EX</span>
               <span className="text-[rgb(146,233,220)]">P</span>
               <span className="text-[rgb(0,218,196)]">EN</span>
