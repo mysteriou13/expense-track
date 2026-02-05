@@ -12,7 +12,7 @@ interface MyAppProps extends AppProps {
 }
 
 export default function App({ Component, pageProps }: MyAppProps) {
-  const { session, ...rest } = pageProps;
+  const { session } = pageProps;
 
   return (
     <Provider store={store}>
