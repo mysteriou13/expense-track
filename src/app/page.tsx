@@ -1,11 +1,14 @@
+
+import { redirect } from 'next/navigation'
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import FromConnection from "./components/fromConnection/fromConnection";
-import Deconnection from "./components/Deconnection/Deconnection";
 import Arrow from "./components/Arrow/Arrow";
 import TitleIIndex from "./components/TitleIndex/TitleIIndex";
 export default async function Home() {
   const session = await getServerSession(authOptions);
+
+
 
   return (
     <div>
@@ -21,11 +24,8 @@ export default async function Home() {
             </div>
           </div>
         </div>
-      ) : (
-        <div>
-          Bienvenue, {session.user?.name}
-          <Deconnection />{" "}
-        </div>
+      ):(
+        redirect('/User')
       )}
     </div>
   );
