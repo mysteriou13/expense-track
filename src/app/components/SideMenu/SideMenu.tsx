@@ -2,7 +2,7 @@
 
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
-import { useState,useEffect } from "react";
+import { useState,useMemo } from "react";
 import Image from "next/image";
 import LinkSide from "../LinkSide/LinkSide";
 import type { IconItem } from "@/app/Type/Type";
@@ -51,15 +51,13 @@ export default function SideMenuClient({ session }: SideMenuClientProps) {
         }
     ]);
 
-useEffect(() => {
-  setIco((prevIco) =>
-    prevIco.map((icomap) =>
+ const memoIco = useMemo(() => {
+    return ico.map((icomap) =>
       icomap.nameico === namelink
-        ? { ...icomap, colorIco: "rgb(0, 218, 198)" } // copie + changement
-        : { ...icomap, colorIco: "#D8FFFB" } // remet les autres couleurs par défaut si besoin
-    )
-  );
-}, [namelink]);
+        ? { ...icomap, colorIco: "rgb(0, 218, 198)" } // highlight actif
+        : { ...icomap, colorIco: "#D8FFFB" } // couleur par défaut
+    );
+  }, [namelink]);
 
   
 
@@ -79,7 +77,7 @@ useEffect(() => {
       </div>
 
       <div className="space-y-2">
-        {ico.map((icomap, index) => (
+        {memoIco.map((icomap, index) => (
           <LinkSide
             key={index}
             pathIco={icomap.pathIco}
