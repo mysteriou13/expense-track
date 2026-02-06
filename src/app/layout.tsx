@@ -1,16 +1,17 @@
-import "./globals.css"
-export default function LayoutRouter({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en">
-      <body>
+// app/layout.tsx
+'use client'  // Important ! Client Component pour utiliser Redux
 
-        {/* SessionProvider est maintenant dans un Client Component */}
-        <div>{children}</div>
-      </body>
-    </html>
+import { ReactNode } from "react";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+import './globals.css';
+
+export default function RootLayout({ children }: { children: ReactNode }) {
+  return (
+    <Provider store={store}>
+      <html lang="en">
+        <body>{children}</body>
+      </html>
+    </Provider>
   );
 }

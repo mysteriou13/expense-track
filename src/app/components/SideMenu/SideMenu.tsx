@@ -1,15 +1,21 @@
 'use client'
+
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/redux/store";
+import { useState,useEffect } from "react";
 import Image from "next/image";
-import { useState } from "react";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import LinkSide from "../LinkSide/LinkSide";
 import type { IconItem } from "@/app/Type/Type";
-import LinkSide from "@/app/components/LinkSide/LinkSide";
+import type { Session } from "next-auth";
 
+interface SideMenuClientProps {
+  session: Session | null;
+}
 
-export default async function SideMenu() {
-    /*tab ico*/
-    const [ico, setitco] = useState<IconItem[]>([
+export default function SideMenuClient({ session }: SideMenuClientProps) {
+  const namelink = useSelector((state: RootState) => state.sliceUser.namelink);
+
+   const [ico, setIco] = useState<IconItem[]>([
         {
             pathIco: "M13 18h-2v-2h2v2zm2-4H9v6h6v-6zm4-4.7V4h-3v2.6L12 3 2 12h3l7-6.31L19 12h3l-3-2.7z",
             nameico: 'home',
@@ -45,32 +51,44 @@ export default async function SideMenu() {
         }
     ]);
 
-    const session = await getServerSession(authOptions);
+useEffect(() => {
+  setIco((prevIco) =>
+    prevIco.map((icomap) =>
+      icomap.nameico === namelink
+        ? { ...icomap, colorIco: "rgb(0, 218, 198)" } // copie + changement
+        : { ...icomap, colorIco: "#D8FFFB" } // remet les autres couleurs par défaut si besoin
+    )
+  );
+}, [namelink]);
 
-    if (!session) return null; // Rien si pas connecté
+  
 
-    return (
-      <div className="p-4 text-white w-64">
-        <div className="flex items-center gap-4 mb-6">
-          <Image
-            src={session.user?.image || "/default-user.png"}
-            width={70}
-            height={70}
-            alt={session.user?.name || "User Image"}
-            className="rounded-full"
-          />
-          <div className="font-bold">{session.user?.name}</div>
-        </div>
+  if (!session) return null;
 
-        <div className="space-y-2">
-          {
-           ico.map(icomap=>
-           <LinkSide pathIco={icomap.pathIco} nameico={icomap.nameico} colorIco={icomap.colorIco}/>
-           )
-       
-          }
-     
-        </div>
+  return (
+    <div className="p-4 text-white w-64">
+      <div className="flex items-center gap-4 mb-6">
+        <Image
+          src={session.user?.image ?? ""}
+          width={70}
+          height={70}
+          alt={session.user?.name ?? "User"}
+          className="rounded-full"
+        />
+        <div className="font-bold">{session.user?.name ?? "Utilisateur"}</div>
       </div>
-    );
+
+      <div className="space-y-2">
+        {ico.map((icomap, index) => (
+          <LinkSide
+            key={index}
+            pathIco={icomap.pathIco}
+            nameico={icomap.nameico}
+            colorIco={icomap.colorIco}
+          />
+        ))}
+        
+      </div>
+    </div>
+  );
 }

@@ -1,15 +1,14 @@
-// pages/_app.tsx
 import { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
-import { Provider } from "react-redux";
-import { store } from "@/app/redux/store";
+import type { Session } from "next-auth";
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps<{ session?: Session }>) {
   return (
-    <Provider store={store}>
-      <SessionProvider session={pageProps.session}>
-        <Component {...pageProps} />
-      </SessionProvider>
-    </Provider>
+    <SessionProvider session={session}>
+      <Component {...pageProps} />
+    </SessionProvider>
   );
 }

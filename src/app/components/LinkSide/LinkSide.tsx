@@ -1,8 +1,19 @@
 import type { IconItem } from "@/app/Type/Type";
+import { useSelector ,useDispatch } from "react-redux";
+import { RootState } from "@/app/redux/store"
+import { setNameLink } from "@/app/redux/Slice/SliceLinkUser/SliceLinkUser";
 
 export default function LinkSide({ pathIco, nameico, colorIco }: IconItem) {
+   const dispatch = useDispatch();
+
+   
+   const Linknav = (namelink:string)=>{
+    dispatch(setNameLink(namelink))
+   }
+
   return (
-    <div className="flex items-center gap-2 hover:text-gray-300 cursor-pointer">
+    <div className="flex items-center gap-2 hover:text-gray-300 cursor-pointer" 
+    onClick={()=>Linknav(nameico)} >
       <svg
         width={27}
         height={27}
@@ -13,7 +24,7 @@ export default function LinkSide({ pathIco, nameico, colorIco }: IconItem) {
         <path fill="none" d="M0 0h24v24H0z" />
         <path d={pathIco} />
       </svg>
-      <span>{nameico}</span>
+      <span style = {{ color:colorIco}}>{nameico}</span>
     </div>
   );
 }
