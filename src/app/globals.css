@@ -1,5 +1,18 @@
 @import "tailwindcss";
 
+:root { 
+  --colorIco:#D8FFFB;
+  
+  --activeIco: rgb(0, 218, 198);
+
+  --bglinkside: #28282A;
+
+  --borderlinkside:#383838;
+
+  --bguser:#1B1B1B
+}
+
+
 @layer base {
   input,
   textarea,

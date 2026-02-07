@@ -1,36 +1,34 @@
-import { useMemo} from "react";
+import { useMemo } from "react";
 import type { IconItem } from "@/app/Type/Type";
 import { useDispatch } from "react-redux";
 import { setNameLink } from "@/app/redux/Slice/SliceLinkUser/SliceLinkUser";
 import { Rubik } from "next/font/google";
 
 const rubik = Rubik({
-
-  
-  subsets:['latin']
-})
+  subsets: ["latin"],
+});
 
 export default function LinkSide({ pathIco, nameico, colorIco }: IconItem) {
   const dispatch = useDispatch();
   const Linknav = (namelink: string) => {
-    dispatch(setNameLink(namelink))
-  }
+    dispatch(setNameLink(namelink));
+  };
 
-  const LinkSidestyle = " h-[6vh] flex items-center gap-2 hover:text-gray-300 cursor-pointer"
+  const LinkSidestyle =
+    " h-[6vh] flex items-center gap-2 hover:text-gray-300 cursor-pointer";
 
-  const classBorder = "bg-[#28282A] rounded-lg border border-[#383838] ";
+  const classBorder = "bg-[--borderlinkside] rounded-lg border border-[var(--borderlinkside)] ";
 
-  const currentStyle = useMemo(()=>{
- if (colorIco === "rgb(0, 218, 198)") {
+  const currentStyle = useMemo(() => {
+    if (colorIco === "var(--activeIco)") {
       return `${LinkSidestyle} ${classBorder}`;
-    }else{
-      return `${LinkSidestyle}`
+    } else {
+      return `${LinkSidestyle}`;
     }
-  },[colorIco])
+  }, [colorIco]);
 
   return (
-    <div className = {currentStyle}
-    onClick={()=>Linknav(nameico)} >
+    <div className={currentStyle} onClick={() => Linknav(nameico)}>
       <svg
         width={27}
         height={27}
@@ -41,7 +39,9 @@ export default function LinkSide({ pathIco, nameico, colorIco }: IconItem) {
         <path fill="none" d="M0 0h24v24H0z" />
         <path d={pathIco} />
       </svg>
-      <span className={rubik.className} style = {{ color:colorIco}}>{nameico}</span>
+      <span className={rubik.className} style={{ color: colorIco }}>
+        {nameico}
+      </span>
     </div>
   );
 }
