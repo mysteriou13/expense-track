@@ -1,12 +1,13 @@
 'use client'
-
+import { redirect } from 'next/navigation'
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
-import { useState,useMemo } from "react";
+import { useState,useEffect,useMemo } from "react";
 import Image from "next/image";
 import LinkSide from "../LinkSide/LinkSide";
 import type { IconItem } from "@/app/Type/Type";
 import type { Session } from "next-auth";
+import  {signOut} from "next-auth/react"
 
 interface SideMenuClientProps {
   session: Session | null;
@@ -59,7 +60,13 @@ export default function SideMenuClient({ session }: SideMenuClientProps) {
     );
   }, [namelink]);
 
-  
+  useEffect(()=>{
+
+    if(!session){
+    redirect('/')
+    }
+
+  },[session])
 
   if (!session) return null;
 
@@ -87,6 +94,8 @@ export default function SideMenuClient({ session }: SideMenuClientProps) {
         ))}
         
       </div>
+
+      <div  className='cursor-pointer' onClick={()=> signOut()}> deconnection</div>
     </div>
   );
 }

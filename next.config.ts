@@ -1,12 +1,13 @@
-import type { NextConfig } from "next";
+// next.config.ts
+import { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  reactCompiler: true,
-
   images: {
-    domains: [
-      "lh3.googleusercontent.com",      // Google
-      "avatars.githubusercontent.com",  // GitHub
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
     ],
   },
 };

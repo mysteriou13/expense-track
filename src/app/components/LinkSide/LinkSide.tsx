@@ -1,3 +1,5 @@
+"use client"
+import { useRouter } from 'next/navigation'
 import { useMemo } from "react";
 import type { IconItem } from "@/app/Type/Type";
 import { useDispatch } from "react-redux";
@@ -9,13 +11,16 @@ const rubik = Rubik({
 });
 
 export default function LinkSide({ pathIco, nameico, colorIco }: IconItem) {
+  
   const dispatch = useDispatch();
+   const router = useRouter();
+
   const Linknav = (namelink: string) => {
     dispatch(setNameLink(namelink));
+    router.push("/User/"+nameico)
   };
 
-  const LinkSidestyle =
-    " h-[6vh] flex items-center gap-2 hover:text-gray-300 cursor-pointer";
+  const LinkSidestyle =" h-[6vh] flex items-center gap-2 hover:text-gray-300 cursor-pointer";
 
   const classBorder = "bg-[--borderlinkside] rounded-lg border border-[var(--borderlinkside)] ";
 
