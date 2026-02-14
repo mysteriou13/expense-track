@@ -10,20 +10,21 @@ const rubik = Rubik({
   subsets: ["latin"],
 });
 
-export default function LinkSide({ pathIco, nameico, colorIco }: IconItem) {
-  
+export default function LinkSide({ pathIco, nameico, colorIco, linkIco }: IconItem) {
+
   const dispatch = useDispatch();
-   const router = useRouter();
+  const router = useRouter();
 
   const Linknav = (namelink: string) => {
     dispatch(setNameLink(namelink));
-    router.push("/User/"+nameico)
+    router.push(linkIco)
   };
 
-  const LinkSidestyle =" h-[6vh] flex items-center gap-2 hover:text-gray-300 cursor-pointer";
+  const LinkSidestyle = " h-[6vh] flex items-center gap-2 hover:text-gray-300 cursor-pointer";
 
   const classBorder = "bg-[--borderlinkside] rounded-lg border border-[var(--borderlinkside)] ";
 
+  /*change style lien after click*/
   const currentStyle = useMemo(() => {
     if (colorIco === "var(--activeIco)") {
       return `${LinkSidestyle} ${classBorder}`;
