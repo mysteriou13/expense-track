@@ -33,6 +33,7 @@ export default function FormConnection() {
       return;
     }
 
+    if(textButton === "inscription") {
     try {
       const response = await addUser({
          ...dataUser,
@@ -43,6 +44,7 @@ export default function FormConnection() {
     } catch (err) {
       console.error("Error creating user:", err);
     }
+  }
   
 
   };
