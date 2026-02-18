@@ -1,5 +1,5 @@
-'use client'
-import { redirect } from 'next/navigation'
+'use client';
+import { redirect } from 'next/navigation';
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
 import { useState,useEffect,useMemo } from "react";
