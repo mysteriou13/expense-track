@@ -6,7 +6,7 @@ export const userApi = createApi({
   endpoints: (builder) => ({
     addUser: builder.mutation({
       query: (user: { email: string; password: string; provider: string }) => ({
-        url: "users/User", // chemin complet correct
+        url: process.env.NEXT_PUBLIC_REGISTER_URL!, // chemin complet correct
         method: "POST",
         body: user,
       }),
@@ -15,3 +15,4 @@ export const userApi = createApi({
 });
 
 export const { useAddUserMutation } = userApi;
+

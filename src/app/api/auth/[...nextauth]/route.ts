@@ -17,7 +17,7 @@ export const authOptions = {
       },
       async authorize(credentials) {
         // Appel à ton backend via fetch ou RTK Query
-        const res = await fetch( process.env.NEXT_PUBLIC_URL_BACK + "/users/User", {
+        const res = await fetch( process.env.NEXT_PUBLIC_URL_BACK + process.env.NEXT_PUBLIC_REGISTER_URL!, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -28,12 +28,14 @@ export const authOptions = {
 
         const data = await res.json();
 
-        if (res.ok && data.user && data.token) {
+        console.log("data", data);
+
+        if (data.token) {
           // On renvoie l'objet utilisateur + token
           return {
-            id: data.user.id,
-            name: data.user.name,
-            email: data.user.email,
+            id: data.id,
+            email: data.email,
+            name: data.name,
             token: data.token, // ton JWT du back
           };
         }

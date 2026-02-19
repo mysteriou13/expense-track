@@ -27,24 +27,13 @@ export default function FormConnection() {
   const createUser = async (provider: string, e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    if (provider !== "local") {
-      // login OAuth
-      signIn(provider);
-      return;
-    }
+     await signIn(provider, {
+      redirect: true,
+      ...dataUser,
+      callbackUrl: "/User",
+    });
 
-    if(textButton === "inscription") {
-    try {
-      const response = await addUser({
-         ...dataUser,
-        provider: "local",
-      }).unwrap();
 
-      console.log("User added successfully:", response);
-    } catch (err) {
-      console.error("Error creating user:", err);
-    }
-  }
   
 
   };
@@ -95,7 +84,7 @@ export default function FormConnection() {
           <div className="mt-4">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              onClick={(e) => createUser("local", e)}
+              onClick={(e) => createUser("credentials", e)}
             >
               {textButton}
             </button>
