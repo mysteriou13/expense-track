@@ -1,15 +1,17 @@
 "use client";
+import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
-/* Redux API for adding user */
 import { useAddUserMutation } from "@/app/redux/service/user";
-
+import Loading from "../Loading/Loading";
 export default function FormConnection() {
+  const [loading, setLoading] = useState(false);  
+  useSession();
   // Redux mutation pour ajouter un utilisateur
-  const [addUser, { data, isError, isLoading }] = useAddUserMutation();
+  const [addUser] = useAddUserMutation();
 
-  // type : connection
-  //  ou inscription
+  // type : connection   or inscription
+
   const [type, setType] = useState<"connection" | "inscription">("connection");
 
   // données du formulaire
@@ -24,18 +26,26 @@ export default function FormConnection() {
   };
 
   // fonction pour créer l'utilisateur ou se connecter via provider
-  const createUser = async (provider: string, e: React.MouseEvent<HTMLButtonElement>) => {
+  const createUser = async (
+    provider: string,
+    e: React.MouseEvent<HTMLButtonElement>,
+  ) => {
     e.preventDefault();
-
-     await signIn(provider, {
-      redirect: true,
-      ...dataUser,
-      callbackUrl: "/User",
-    });
-
-
-  
-
+    setLoading(true);
+    if (provider === "credentials") {
+      await signIn(provider, {
+        redirect: true,
+        ...dataUser,
+        callbackUrl: "/User",
+      });
+    } else {
+      signIn(provider);
+      await addUser({
+        ...dataUser,
+        provider: provider,
+      }).unwrap();
+    }
+   
   };
 
   // Mettre à jour le texte du bouton en fonction du type
@@ -45,69 +55,85 @@ export default function FormConnection() {
 
   return (
     <div className="text-white relative left-[35vw] top-[40vh] w-[31vw] h-[60%]">
-      <form>
-        {/* choix connection / inscription */}
-        <div className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex cursor-pointer justify-around mb-5 gap-5 underline">
-          <div className="text-2xl mb-4" onClick={() => setType("connection")}>
-            Connection
-          </div>
-          <div className="text-2xl mb-4" onClick={() => setType("inscription")}>
-            Inscription
+      {loading && (
+        <div className="absolute top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex items-center justify-center z-10">
+          <div className="text-white text-xl">
+            <Loading />
           </div>
         </div>
+      )}
 
-        {/* inputs email / password */}
-        <div className="grid gap-5 text-[1.2em]">
-          <div className="flex justify-between">
-            <label>Email</label>
-            <input
-              className="border-black bg-gray-600"
-              name="email"
-              type="email"
-              placeholder="test@test.com"
-              onChange={handleChange}
-            />
-          </div>
+      {!loading && (
+          <form>
+            {/* choix connection / inscription */}
+            <div className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex cursor-pointer justify-around mb-5 gap-5 underline">
+              <div
+                className="text-2xl mb-4"
+                onClick={() => setType("connection")}
+              >
+                Connection
+              </div>
+              <div
+                className="text-2xl mb-4"
+                onClick={() => setType("inscription")}
+              >
+                Inscription
+              </div>
+            </div>
 
-          <div className="flex justify-between">
-            <label>Mot de passe</label>
-            <input
-              className="border-black bg-gray-600"
-              name="password"
-              type="password"
-              placeholder="Votre mot de passe"
-              onChange={handleChange}
-            />
-          </div>
+            {/* inputs email / password */}
+            <div className="grid gap-5 text-[1.2em]">
+              <div className="flex justify-between">
+                <label>Email</label>
+                <input
+                  className="border-black bg-gray-600"
+                  name="email"
+                  type="email"
+                  placeholder="test@test.com"
+                  onChange={handleChange}
+                />
+              </div>
 
-          {/* submit */}
-          <div className="mt-4">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              onClick={(e) => createUser("credentials", e)}
-            >
-              {textButton}
-            </button>
-          </div>
+              <div className="flex justify-between">
+                <label>Mot de passe</label>
+                <input
+                  className="border-black bg-gray-600"
+                  name="password"
+                  type="password"
+                  placeholder="Votre mot de passe"
+                  onChange={handleChange}
+                />
+              </div>
 
-          {/* login via providers */}
-          <div className="flex justify-between mt-2">
-            Connection avec :
-            <button
-              className="underline hover:cursor-pointer"
-              onClick={(e) => createUser("github", e)}
-            >
-              Github
-            </button>
-            <button
-              className="underline hover:cursor-pointer"
-              onClick={(e) => createUser("google", e)}
-            >
-              Google
-            </button>
-          </div>
-        </div>
-      </form>
+              {/* submit */}
+              <div className="mt-4">
+                <button
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  onClick={(e) => createUser("credentials", e)}
+                >
+                  {textButton}
+                </button>
+              </div>
+
+              {/* login via providers */}
+              <div className="flex justify-between mt-2">
+                Connection avec :
+                <button
+                  className="underline hover:cursor-pointer"
+                  onClick={(e) => createUser("github", e)}
+                >
+                  Github
+                </button>
+                <button
+                  className="underline hover:cursor-pointer"
+                  onClick={(e) => createUser("google", e)}
+                >
+                  Google
+                </button>
+              </div>
+            </div>
+          </form>
+        )}
     </div>
   );
 }
